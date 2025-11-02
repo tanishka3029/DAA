@@ -1,0 +1,36 @@
+#include <stdio.h> 
+void nextvalue(int k, int n, int G[n+1][n+1], int x[n+1]); 
+void hamiltonian(int k, int n, int G[n+1][n+1], int x[n+1]) { 
+while (1) { 
+nextvalue(k, n, G, x); 
+if (x[k] == 0) 
+return; 
+if (k == n) { 
+for (int i = 1; i <= n; i++) 
+printf("%d ", x[i]); 
+printf("%d\n", x[1]); 
+} else { 
+hamiltonian(k + 1, n, G, x); 
+} 
+} 
+} 
+void nextvalue(int k, int n, int G[n+1][n+1], int x[n+1]) { 
+// ... (rest of the nextvalue function is identical) 
+} 
+int main() { 
+int n = 5; 
+// Graph G (T=1, M=2, S=3, H=4, C=5) 
+int G[6][6] = { 
+{0,0,0,0,0,0}, 
+{0,0,1,1,0,1},  // T (1) connections 
+{0,1,0,1,1,0},  // M (2) connections 
+{0,1,1,0,1,1},  // S (3) connections 
+{0,0,1,1,0,1},  // H (4) connections 
+{0,1,0,1,1,0}   // C (5) connections 
+}; 
+int x[6] = {0}; 
+x[1] = 1; 
+printf("Hamiltonian cycles:\n"); 
+hamiltonian(2, n, G, x); 
+return 0; 
+}
