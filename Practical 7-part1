@@ -1,0 +1,59 @@
+#include <stdio.h> 
+void nextvalue(int k, int n, int G[n+1][n+1], int x[n+1]); 
+void hamiltonian(int k, int n, int G[n+1][n+1], int x[n+1]) { 
+while (1) { 
+nextvalue(k, n, G, x); 
+if (x[k] == 0) 
+return; 
+if (k == n) { 
+// Found a Hamiltonian Cycle 
+for (int i = 1; i <= n; i++) 
+printf("%d ", x[i]); 
+printf("%d\n", x[1]); // Return to the start vertex 
+} else { 
+// Continue to the next vertex 
+hamiltonian(k + 1, n, G, x); 
+} 
+} 
+} 
+void nextvalue(int k, int n, int G[n+1][n+1], int x[n+1]) { 
+while (1) { 
+// Try the next vertex for position k 
+x[k] = (x[k] + 1) % (n + 1); 
+if (x[k] == 0) 
+return; // No more vertices to check for this position 
+// Check if there is an edge from the previous vertex (k-1) to the current 
+vertex (k) 
+if (G[x[k - 1]][x[k]] != 0) { 
+int j; 
+// Check if the vertex x[k] has already been visited (loop detection) 
+for (j = 1; j < k; j++) { 
+if (x[j] == x[k]) 
+break; 
+} 
+if (j == k) { 
+// If it's not the last step (k < n), or if it is the last step (k == n)  
+// and there's an edge back to the starting vertex (x[n] to x[1]) 
+if ((k < n) || (k == n && G[x[n]][x[1]] != 0)) 
+return; // Found a valid next step 
+} 
+} 
+} 
+} 
+int main() { 
+int n = 5; // Number of vertices 
+// The graph G (using 1-based indexing, so size 6x6) 
+int G[6][6] = { 
+{0,0,0,0,0,0}, 
+{0,0,1,1,0,1}, 
+{0,1,0,1,1,0}, 
+{0,1,1,0,1,0}, 
+{0,0,1,1,0,1}, 
+{0,1,0,0,1,0} 
+}; 
+int x[6] = {0}; // Solution vector, initialized to 0 
+x[1] = 1; // Start from vertex 1 
+printf("Hamiltonian cycles:\n"); 
+hamiltonian(2, n, G, x); // Start filling from the 2nd position 
+return 0; 
+}
